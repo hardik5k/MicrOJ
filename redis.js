@@ -17,4 +17,8 @@ async function getFromRedis(key) {
     return  await client.get(key)
 }
 
-module.exports= {setInRedis, getFromRedis};
+async function removeKey(key){
+    await client.del(key);
+}
+
+module.exports= {setInRedis, getFromRedis, removeKey};

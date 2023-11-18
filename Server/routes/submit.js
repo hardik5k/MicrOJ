@@ -1,5 +1,5 @@
 const express = require('express');
-const {setInRedis} = require('../../Judge/redis.js');
+const {setInRedis} = require('../../redis.js');
 const bodyParser = require("body-parser");
 const {sendMessage} = require('../rabbitMQ.js');
 const router = express.Router();
