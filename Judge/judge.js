@@ -1,5 +1,5 @@
 const amqp = require('amqp-connection-manager');
-const { setInRedis } = require("./redis.js");
+const { setInRedis } = require("../redis.js");
 const { run_submission } = require('./execute.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
@@ -21,6 +21,7 @@ const onNewMessage = async (data) => {
     channel.ack(data);   
     
     console.log(ERROR_CODES[res.toString()]);
+    setInRedis(submissionID, ERROR_CODES[res.toString()]);
 
 }
 
