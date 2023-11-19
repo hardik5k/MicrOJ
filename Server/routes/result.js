@@ -1,6 +1,6 @@
 const express= require('express');
 const bodyParser=require('body-parser');
-const {getFromRedis, removeKey} = require('../../redis.js');
+const {getFromRedis, removeKey} = require('../redis.js');
 
 const router=express.Router();
 router.use(bodyParser.json());
