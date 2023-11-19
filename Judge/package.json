@@ -1,16 +1,12 @@
 {
-  "name": "MicrOJ",
+  "name": "MicrOJ Judge",
   "version": "1.0.0",
-  "description": "Online Judge",
-  "main": "index.js",
+  "description": "Online Judge execution engine",
+  "main": "judge.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node judge.js;"
   },
-  "keywords": [
-    "Online",
-    "Judge"
-  ],
   "author": "Hardik Khandelwal",
   "license": "ISC",
   "dependencies": {

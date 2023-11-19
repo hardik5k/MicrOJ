@@ -1,5 +1,5 @@
 const amqp = require('amqp-connection-manager');
-const { setInRedis } = require("../redis.js");
+const { setInRedis } = require("./redis.js");
 const { run_submission } = require('./execute.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
