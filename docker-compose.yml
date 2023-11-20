@@ -1,0 +1,42 @@
+
+version: '3'
+services:
+  server:
+    container_name: server
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile_server
+    ports:
+      - '3000:3000'
+    links:
+      - redis
+      - mongo
+      - rabbitmq
+  judge:
+    container_name: judge
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile_judge
+    links:
+      - redis
+      - mongo
+      - rabbitmq
+  mongo:
+    container_name: mongo_service
+    image: 'mongo:7'
+    expose: 
+      - 27017
+  redis:
+    container_name: redis_service
+    image: 'redis:4.0.11'
+    expose:
+      - 6379
+  rabbitmq:
+    container_name: queue_service
+    image: rabbitmq:management
+    expose:
+      - 5672
+    ports:
+      - '15672:15672'

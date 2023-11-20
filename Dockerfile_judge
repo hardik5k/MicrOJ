@@ -1,0 +1,5 @@
+FROM node:18-alpine
+WORKDIR /Judge
+COPY ./Judge ./
+RUN npm i
+CMD npm start
