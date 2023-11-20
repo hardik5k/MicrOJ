@@ -17,7 +17,8 @@ const onNewMessage = async (data) => {
     const ext = message.language;
     setInRedis(submissionID, "Running Testcases");
     let num_cases = await retireveTestCases(message.questionID, submissionID, ext, message.src);
-    let res = await run_submission(submissionID, containerName, message.timeOut * 1000, num_cases);
+    // let res = await run_submission(submissionID, containerName, message.timeOut * 1000, num_cases);
+    let res = -1;
     channel.ack(data);   
     
     console.log(ERROR_CODES[res.toString()]);
@@ -53,7 +54,7 @@ async function retireveTestCases(qid, sid, ext, src){
     
 }
     
-mongoose.connect("mongodb://127.0.0.1:27017/MicrOJ");   
+mongoose.connect("mongodb://mongo:27017/MicrOJ");   
 const db = mongoose.connection;
 
 const Schema = mongoose.Schema
@@ -71,7 +72,7 @@ const testCaseSchema = new Schema({
   
   const questionTestCase = mongoose.model("questionTestCases", questionTestCaseSchema);
 
-  const connection = amqp.connect(['amqp://localhost']);
+  const connection = amqp.connect(['amqp://rabbitmq']);
   connection.on('connect', () => console.log('Connected to RabbitMQ server'));
   connection.on('disconnect', err => console.log('Disconnected from RabbitMQ server', err));
 
