@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 app.listen(port, async function () {
   try{
-      mongoose.connect("mongodb://127.0.0.1:27017/MicrOJ");
+      await mongoose.connect("mongodb://mongo:27017/MicrOJ");
       console.log("Connected to MongoDB server");
   }
   catch (err) {

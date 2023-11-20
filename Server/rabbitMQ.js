@@ -1,7 +1,7 @@
 const amqp = require('amqp-connection-manager');
 const queueName = "OJq"
 
-const connection = amqp.connect(['amqp://localhost']);
+const connection = amqp.connect(['amqp://rabbitmq']);
 connection.on('connect', () => console.log('Connected to RabbitMQ server'));
 connection.on('disconnect', err => console.log('Disconnected from RabbitMQ server', err));
 
