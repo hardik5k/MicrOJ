@@ -6,7 +6,7 @@ const router=express.Router();
 router.use(bodyParser.json());
 
 router.get('/:submissionID', async (req,res) =>{
-    var key = req.params.submissionID.toString();
+    var key = req.params.submissionID
     var status= await getFromRedis(key);
     if(status == null)
     {
