@@ -1,0 +1,8 @@
+/* src/Header.css */
+
+.header-link {
+    text-decoration: none; /* Remove default link underline */
+    color: inherit; /* Inherit text color from the parent element */
+    cursor: pointer; /* Set cursor to pointer on hover (optional) */
+  }
+  
