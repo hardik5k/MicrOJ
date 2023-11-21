@@ -13,10 +13,10 @@ function compareOutput(file1, file2) {
 
 }
 
-async function clearContainer(containerName){
-  exec(`docker stop ${containerName}`)
-  exec(`docker rm ${containerName}`)
-}
+// async function clearContainer(containerName){
+//   exec(`docker stop ${containerName}`)
+//   exec(`docker rm ${containerName}`)
+// }
 
 function executeCommand(command) {
   return new Promise((resolve, reject) => {
@@ -32,38 +32,40 @@ function executeCommand(command) {
 
 const run_submission = async (submissionID, containerName, timeOut, num_cases) => {
   let docker_run_cmd = `${DOCKERRUNCMD} --name ${containerName} ${IMAGE_NAME}`
-  let program_compile_cmd =  `docker exec ${containerName} g++ /home/folderrun/${submissionID}.cpp -o /home/folderrun/${submissionID}.out`
-  let execute_command = `/home/folderrun/${submissionID}.out `
+  let program_compile_cmd =  `g++ folderrun/${submissionID}.cpp -o folderrun/${submissionID}.out`
+  let execute_command = `folderrun/${submissionID}.out `
 
-  try {
-    await executeCommand(docker_run_cmd);
-  } catch (err){
-    return -5;
-  }
+  // try {
+  //   await executeCommand(docker_run_cmd);
+  // } catch (err){
+  //   return -5;
+  // }
 
   try {
     await executeCommand(program_compile_cmd);
   } catch (err){
+    console.log(err);
     return -1;
   }
 
   for (let i = 0; i < num_cases; i++){
-    inputTCPath = "/home/folderrun/testcases/tc" + (i + 1).toString() + "i.txt";
-    outputTCPath = "/home/folderrun/testcases/tc" + (i + 1).toString() + "o.txt";
-    outputPath = '/home/folderrun/output/tc' + (i + 1).toString() + 'a.txt'
+    inputTCPath = "folderrun/testcases/tc" + (i + 1).toString() + "i.txt";
+    outputTCPath = "folderrun/testcases/tc" + (i + 1).toString() + "o.txt";
+    outputPath = 'folderrun/output/tc' + (i + 1).toString() + 'a.txt'
     input_cmd = execute_command + " < " + inputTCPath + " > " + outputPath;
 
     try {
-      await executeCommand("docker exec " + containerName + ' /bin/sh -c "' + input_cmd + '"', { timeout: timeOut });
+      await executeCommand(input_cmd, { timeout: timeOut });
     } catch (err){
+      console.log(err);
       return -2;
     }
     
   }
-  clearContainer(containerName);
+  // clearContainer(containerName);
   for (let i = 0; i < num_cases; i++){
-    outputTCPath = __dirname + "/folderrun/testcases/tc" + (i + 1).toString() + "o.txt";
-    outputPath = __dirname + '/folderrun/output/tc' + (i + 1).toString() + 'a.txt'
+    outputTCPath = "folderrun/testcases/tc" + (i + 1).toString() + "o.txt";
+    outputPath = 'folderrun/output/tc' + (i + 1).toString() + 'a.txt'
     let result = compareOutput(outputTCPath, outputPath);
 
     if (result == false){

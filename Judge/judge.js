@@ -17,8 +17,7 @@ const onNewMessage = async (data) => {
     const ext = message.language;
     setInRedis(submissionID, "Running Testcases");
     let num_cases = await retireveTestCases(message.questionID, submissionID, ext, message.src);
-    // let res = await run_submission(submissionID, containerName, message.timeOut * 1000, num_cases);
-    let res = -1;
+    let res = await run_submission(submissionID, containerName, message.timeOut * 1000, num_cases);
     channel.ack(data);   
     
     console.log(ERROR_CODES[res.toString()]);
