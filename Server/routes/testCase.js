@@ -22,17 +22,16 @@ const questionTestCaseSchema = new Schema({
 const Questiontestcase = mongoose.model("questiontestcases", questionTestCaseSchema);
 
 router.post("/:quesID", async (req, res) => {
-  const testcase = new Testcase({
-    input: req.body.input.toString(),
-    output: req.body.output.toString(),
-  });
   Questiontestcase.find({ questionID: req.params.quesID })
     .then(async (data) => 
     {
       if (data.toString() == "") {
         const newTestCase = new Questiontestcase({
           questionID: req.params.quesID,
-          testCases: [testcase],
+          testCases: [{
+            input: req.body.input.toString(),
+            output: req.body.output.toString(),
+          }],
         });
         await newTestCase.save();
       } else {
