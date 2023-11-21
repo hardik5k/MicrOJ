@@ -1,10 +1,13 @@
 // src/AddQuestionPage.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/AddQuestionPage.css';
 import Header from '../components/Header/Header';
+import axios from 'axios';
+import { toast} from 'react-toastify';
 
 const AddQuestionPage = () => {
+  const navigate = useNavigate();
   // State to hold form data
   const [formData, setFormData] = useState({
     title: '',
@@ -21,11 +24,38 @@ const AddQuestionPage = () => {
     }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log("on submit called");
     e.preventDefault();
-    // Add logic to handle form submission (e.g., send data to server)
-    console.log('Form submitted:', formData);
+  
+    // Destructure form data
+    const { title, description, tle } = formData;
+  
+    // Create the request body
+    const requestBody = {
+      timeOut: tle,
+      title: title,
+      des: description
+    };
+  
+    try {
+      // Make a POST request
+      const localhost = "http://127.0.0.1:3000";
+      const response = await axios.post(localhost + "/question/add", requestBody);
+  
+      console.log('Server response:', response.data);
+
+      toast.success('Question submitted successfully!');
+
+      navigate('/add');
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+
+      toast.error('Error submitting question. Please try again.');
+
+      navigate('/add');
+    }
   };
 
   return (
@@ -55,7 +85,7 @@ const AddQuestionPage = () => {
 
           <label htmlFor="tle">Time Out(in Sec):</label>
           <input
-            type="text"
+            type="number"
             id="tle"
             name="tle"
             value={formData.tle}

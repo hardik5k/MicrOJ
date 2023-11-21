@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import '../styles/HomePage.css';
 import Header from '../components/Header/Header';
-import QuestionList from '../components/QuestionList/QuestionList';
+
 
 const HomePage = () => {
 
