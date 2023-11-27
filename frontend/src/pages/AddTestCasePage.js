@@ -1,10 +1,13 @@
 // src/AddTestCasePage.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/AddTestCasePage.css';
 import Header from '../components/Header/Header';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const AddTestCasePage = () => {
+  const navigate = useNavigate();
   // State to hold form data
   const [formData, setFormData] = useState({
     questionId: '',
@@ -22,9 +25,34 @@ const AddTestCasePage = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add logic to handle form submission (e.g., send data to server)
+    // Destructure form data
+    const { questionId, input, output } = formData;
+
+    // Create the request body
+    const requestBody = {
+      input,
+      output,
+    };
+
+    try {
+      // Make a POST request
+      const localhost = "http://127.0.0.1:3000";
+      const response = await axios.post(localhost + "/testcase/" + String(questionId), requestBody);
+
+      console.log('Server response:', response.data);
+
+      toast.success('Testcase added successfully!');
+
+      navigate('/add');
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+
+      toast.error('Error adding testcase. Please try again.');
+    }
+
     console.log('Form submitted:', formData);
   };
 

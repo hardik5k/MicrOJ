@@ -8,28 +8,21 @@ const QuestionsPage = () => {
   const [loading, setLoading] = useState(false);
 
   // Mock API call function (replace this with your actual API call)
-  const fetchQuestions = () => {
+  const fetchQuestions = async () => {
     setLoading(true);
-    // try {
-    //   setLoading(true);
-    //   // Perform your API call to get the list of questions
-    //   const response = await fetch('your-api-endpoint');
-    //   const data = await response.json();
-    //   setQuestions(data); // Assuming the response is an array of questions
-    // } catch (error) {
-    //   console.error('Error fetching questions:', error);
-    // } finally {
-    //   setLoading(false);
-    // }
-    // Assuming this is the API response structure
-    const apiResponse = [
-      { id: 1, problemName: 'Question 1' },
-      { id: 2, problemName: 'Question 2' },
-      // ... more questions
-    ];
-
-    setQuestions(apiResponse);
-    setLoading(false);
+    try {
+      setLoading(true);
+      // Perform your API call to get the list of questions
+      const localhost = "http://127.0.0.1:3000/";
+      const response = await fetch(localhost + "question/getall");
+      const data = await response.json();
+      setQuestions(data); // Assuming the response is an array of questions
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

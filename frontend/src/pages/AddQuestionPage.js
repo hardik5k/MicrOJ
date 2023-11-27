@@ -45,16 +45,15 @@ const AddQuestionPage = () => {
   
       console.log('Server response:', response.data);
 
-      toast.success('Question submitted successfully!');
+      toast.success('Question added successfully!');
 
       navigate('/add');
 
     } catch (error) {
       console.error('Error submitting form:', error);
 
-      toast.error('Error submitting question. Please try again.');
+      toast.error('Error adding question. Please try again.');
 
-      navigate('/add');
     }
   };
 

@@ -1,55 +1,139 @@
 // QuestionDetail.js
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../Header';
+import axios from 'axios';
 
 const QuestionDetail = () => {
   const { questionId } = useParams();
+  const [questionDetail, setQuestionDetail] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState('');
+  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [submissionId, setSubmissionId] = useState(null);
 
-  // Fetch the detailed information for the question with the ID "questionId"
-  // You can make an API call here to get the question details
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'CA':
+        return 'Correct Answer';
+      case 'WA':
+        return 'Wrong Answer';
+      case 'CE':
+        return 'Compile Error';
+      default:
+        return 'Unknown Status';
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'CA':
+        return 'green';
+      case 'WA':
+        return 'red';
+      case 'CE':
+        return 'orange';
+      default:
+        return 'black';
+    }
+  };
+
+  const checkSubmissionStatus = useCallback(async () => {
+    const statusUrl = `http://127.0.0.1:3000/result/${submissionId}`;
+
+    const intervalId = setInterval(async () => {
+      try {
+        const statusResponse = await axios.get(statusUrl);
+        setSubmissionStatus(statusResponse.data);
+
+        // If the status is 'completed' or 'error', stop checking
+        if (statusResponse.data === 'CA' || statusResponse.data === 'WA' || statusResponse.data === 'CE') {
+          clearInterval(intervalId);
+        }
+      } catch (error) {
+        console.error('Error checking submission status:', error);
+      }
+    }, 1000); // Adjust the interval as needed
+  }, [submissionId]);
+
+  useEffect(() => {
+    // Start checking the submission status when submissionId changes
+    if (submissionId !== null) {
+      checkSubmissionStatus();
+    }
+  }, [submissionId, checkSubmissionStatus]);
+
+  useEffect(() => {
+    const fetchQuestionDetail = async () => {
+      setLoading(true);
+      try {
+        const apiUrl = `http://127.0.0.1:3000/question/get/${questionId}`;
+        const response = await axios.get(apiUrl);
+        setQuestionDetail(response.data);
+      } catch (error) {
+        console.error('Error fetching question detail:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuestionDetail();
+  }, [questionId]);
+
+  const handleSubmit = async () => {
+    try {
+      const submitUrl = 'http://127.0.0.1:3000/submit';
+      const submitResponse = await axios.post(submitUrl, {
+        questionID: questionId,
+        language: 'cpp',
+        timeOut: 2,
+        src: code,
+      });
+
+      const doubleQuotedString = submitResponse.data.replace(/'/g, '"');
+      setSubmissionId(JSON.parse(doubleQuotedString).submissionID);
+    } catch (error) {
+      console.error('Error submitting code:', error);
+    }
+  };
 
   return (
     <div>
       <Header></Header>
-      <h2>Question {questionId} Details</h2>
-      <div>
-      A boy called Smilo is playing a new game! In the game, there are 𝑛
- hordes of monsters, and the 𝑖
--th horde contains 𝑎𝑖
- monsters. The goal of the game is to destroy all the monsters. To do this, you have two types of attacks and a combo counter 𝑥
-, initially set to 0
-:
-
-The first type: you choose a number 𝑖
- from 1
- to 𝑛
-, such that there is at least one monster left in the horde with the number 𝑖
-. Then, you kill one monster from horde number 𝑖
-, and the combo counter 𝑥
- increases by 1
-.
-The second type: you choose a number 𝑖
- from 1
- to 𝑛
-, such that there are at least 𝑥
- monsters left in the horde with number 𝑖
-. Then, you use an ultimate attack and kill 𝑥
- monsters from the horde with number 𝑖
-. After that, 𝑥
- is reset to zero.
-Your task is to destroy all of the monsters, meaning that there should be no monsters left in any of the hordes. Smilo wants to win as quickly as possible, so he wants to the minimum number of attacks required to win the game.
-      </div>
-      <div style={{paddingTop: 20 + 'px'}}>
-      <textarea
-        rows="10"
-        cols="50"
-        placeholder="Enter your code here..."
-      ></textarea>
-      </div>
-      <div style={{paddingTop: 10 + 'px'}}>
-        <button>Submit</button>
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          {questionDetail && (
+            <>
+              <h2>{questionId}: {questionDetail.title} </h2>
+              <div>
+                <p>{questionDetail.des}</p>
+              </div>
+              <div style={{ paddingTop: 20 + 'px' }}>
+                <textarea
+                  rows="10"
+                  cols="50"
+                  placeholder="Enter your code here..."
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                ></textarea>
+              </div>
+              <div style={{ paddingTop: 10 + 'px' }}>
+                <button onClick={handleSubmit}>Submit</button>
+              </div>
+              {submissionStatus && (
+                <p>
+                  Submission Status: {' '}
+                  <span style={{ fontWeight: 'bold', color: getStatusColor(submissionStatus) }}>
+                    {getStatusText(submissionStatus)}
+                  </span>
+                </p>
+              )}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };
