@@ -11,10 +11,10 @@ const QuestionList = ({ questions }) => {
         {questions.map((question, index) => (
           <li key={question.id}>
             <div className="question-info">
-              <span>{index + 1}:</span>
-              {question.problemName}
+              <span>{question.questionID}:</span>
+              {question.title}
             </div>
-            <Link to={`/questions/${question.id}`} className='action-button'>
+            <Link to={`/questions/${question.questionID}`} className='action-button'>
               Submit
             </Link>
           </li>
