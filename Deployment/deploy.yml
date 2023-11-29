@@ -1,0 +1,14 @@
+---
+- name: MicrOJ
+  hosts: localhost
+  tasks:  
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/hardik5k/MicrOJ
+        dest: $HOME/MicrOJ
+
+
+    - name: Build and start containers
+      command: "docker-compose up -d"
+      args:
+        chdir: $HOME/MicrOJ/
