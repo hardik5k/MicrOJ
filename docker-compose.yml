@@ -4,9 +4,7 @@ services:
   server:
     container_name: server
     restart: always
-    build: 
-      context: .
-      dockerfile: Dockerfile_server
+    build: /Server
     ports:
       - '3000:3000'
     links:
@@ -16,9 +14,7 @@ services:
   judge:
     container_name: judge
     restart: always
-    build: 
-      context: .
-      dockerfile: Dockerfile_judge
+    build: Judge
     links:
       - redis
       - mongo

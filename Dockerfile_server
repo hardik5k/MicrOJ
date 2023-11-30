@@ -1,5 +1,0 @@
-FROM node:18
-WORKDIR /Server
-COPY ./Server ./
-RUN npm i
-CMD npm start
