@@ -8,11 +8,12 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
-            steps {
-                git 'https://github.com/hardik5k/MicrOJ'
-            }
+        stage('Git Clone'){
+        steps{
+            git branch: 'main',
+            url:'https://github.com/hardik5k/MicrOJ'
         }
+    }
 
         stage('Build and Test Frontend') {
             steps {
@@ -46,12 +47,6 @@ pipeline {
 
         stage('Build and Push Docker Images') {
             steps {
-                dir('frontend') {
-                    script {
-                        sh 'docker build -t microj_frontend:${FRONTEND_IMAGE_TAG} .'
-                        sh 'docker push microj_frontend:${FRONTEND_IMAGE_TAG}'
-                    }
-                }
 
                 dir('Server') {
                     script {
