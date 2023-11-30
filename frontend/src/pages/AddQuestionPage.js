@@ -40,8 +40,8 @@ const AddQuestionPage = () => {
   
     try {
       // Make a POST request
-      const localhost = "http://127.0.0.1:3000";
-      const response = await axios.post(localhost + "/question/add", requestBody);
+      //const localhost = "http://127.0.0.1:3000";
+      const response = await axios.post("http://localhost:3000/question/add", requestBody);
   
       console.log('Server response:', response.data);
 

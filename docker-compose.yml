@@ -40,3 +40,12 @@ services:
       - 5672
     ports:
       - '15672:15672'
+  frontend:
+    container_name: frontend
+    restart: always
+    build: 
+      context: ./frontend
+    ports:
+      - '4000:3000'
+    depends_on:
+      - server

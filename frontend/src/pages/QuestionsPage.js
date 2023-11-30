@@ -13,8 +13,8 @@ const QuestionsPage = () => {
     try {
       setLoading(true);
       // Perform your API call to get the list of questions
-      const localhost = "http://127.0.0.1:3000/";
-      const response = await fetch(localhost + "question/getall");
+      //const localhost = "http://127.0.0.1:3000/";
+      const response = await fetch("http://localhost:3000/question/getall");
       const data = await response.json();
       setQuestions(data); // Assuming the response is an array of questions
       console.log(data);
