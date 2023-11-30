@@ -1,31 +1,72 @@
-pipeline
-{
-    environment
-    {
-        docker_image = ""
-    }
+pipeline {
     agent any
-    stages
-    {
-        stage('Stage 1: Git Clone')
-        {
-            steps
-            {
-                git branch: 'main',
-                url:'https://github.com/hardik5k/MicrOJ'
+
+    environment {
+        FRONTEND_IMAGE_TAG = 'v1.0.0'
+        SERVER_IMAGE_TAG = 'v1.0.0'
+        JUDGE_IMAGE_TAG = 'v1.0.0'
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/hardik5k/MicrOJ'
             }
         }
 
-        stage('Build Frontend') {
+        stage('Build and Test Frontend') {
             steps {
-                sh 'cd frontend && npm install && npm run build'
+                dir('frontend') {
+                    script {
+                        sh 'npm install && npm run build && npm run test'
+                    }
+                }
             }
         }
-        stage('Build Frontend') {
+
+        stage('Build and Test Server') {
             steps {
-                sh 'cd frontend && npm install && npm run build'
+                dir('Server') {
+                    script {
+                        sh 'npm install && npm test'
+                    }
+                }
             }
         }
-        
+
+        stage('Build and Test Judge') {
+            steps {
+                dir('Judge') {
+                    script {
+                        sh 'npm install && npm test'
+                    }
+                }
+            }
+        }
+
+        stage('Build and Push Docker Images') {
+            steps {
+                dir('frontend') {
+                    script {
+                        sh 'docker build -t microj_frontend:${FRONTEND_IMAGE_TAG} .'
+                        sh 'docker push microj_frontend:${FRONTEND_IMAGE_TAG}'
+                    }
+                }
+
+                dir('Server') {
+                    script {
+                        sh 'docker build -t microj_server:${SERVER_IMAGE_TAG} .'
+                        sh 'docker push microj_server:${SERVER_IMAGE_TAG}'
+                    }
+                }
+
+                dir('Judge') {
+                    script {
+                        sh 'docker build -t microj_judge:${JUDGE_IMAGE_TAG} .'
+                        sh 'docker push microj_judge:${JUDGE_IMAGE_TAG}'
+                    }
+                }
+            }
+        }
     }
 }
