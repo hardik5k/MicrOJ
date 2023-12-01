@@ -65,4 +65,4 @@ router.get('/get/:prob_id', async (req, res) => {
         });
 })
 
-module.exports = router;
+module.exports = {router, generateUniqueIdFromTitle};
