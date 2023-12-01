@@ -4,7 +4,7 @@ services:
   server:
     container_name: server
     restart: always
-    build: /Server
+    build: Server
     ports:
       - '3000:3000'
     links:
