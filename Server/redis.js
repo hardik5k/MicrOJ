@@ -1,3 +1,27 @@
+var winston = require('winston');
+
+var config = winston.config;
+
+var logger = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)({
+      timestamp: function() {
+        return Date.now();
+      },
+      formatter: function(options) {
+        // - Return string will be passed to logger.
+        // - Optionally, use options.colorize(options.level, <string>) to
+        //   colorize output based on the log level.
+        return options.timestamp() + ' ' +
+          config.colorize(options.level, options.level.toUpperCase()) + ' ' +
+          (options.message ? options.message : '') +
+          (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+      }
+    })
+  ]
+});
+
+
 const redis = require('redis');
 
 const client = redis.createClient({
@@ -9,8 +33,8 @@ const client = redis.createClient({
     await client.connect();
 })();
 
-client.on('connect', () => console.log('Connected to redis'));
-client.on('error', err => console.log('Redis Client Error', err));
+client.on('connect', () => logger.info('Connected to redis'));
+client.on('error', err => logger.error('Redis Client Error', err));
 
 
 async function setInRedis(key, data){
