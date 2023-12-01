@@ -1,25 +1,27 @@
-var winston = require('winston');
+// var winston = require('winston');
 
-var config = winston.config;
+// var config = winston.config;
 
-var logger = new (winston.Logger)({
-  transports: [
-    new (winston.transports.Console)({
-      timestamp: function() {
-        return Date.now();
-      },
-      formatter: function(options) {
-        // - Return string will be passed to logger.
-        // - Optionally, use options.colorize(options.level, <string>) to
-        //   colorize output based on the log level.
-        return options.timestamp() + ' ' +
-          config.colorize(options.level, options.level.toUpperCase()) + ' ' +
-          (options.message ? options.message : '') +
-          (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
-      }
-    })
-  ]
-});
+// var logger = new (winston.Logger)({
+//   transports: [
+//     new (winston.transports.Console)({
+//       timestamp: function() {
+//         return Date.now();
+//       },
+//       formatter: function(options) {
+//         // - Return string will be passed to logger.
+//         // - Optionally, use options.colorize(options.level, <string>) to
+//         //   colorize output based on the log level.
+//         return options.timestamp() + ' ' +
+//           config.colorize(options.level, options.level.toUpperCase()) + ' ' +
+//           (options.message ? options.message : '') +
+//           (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+//       }
+//     })
+//   ]
+// });
+
+const logger = require('./logger');
 
 const amqp = require('amqp-connection-manager');
 const queueName = "OJq"
