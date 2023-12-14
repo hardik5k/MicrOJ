@@ -4,31 +4,27 @@ services:
   server:
     container_name: server
     restart: always
-    build: Server
+    image: shivankarp/microj_server:latest
     ports:
       - '3000:3000'
-    links:
-      - redis
-      - mongo
-      - rabbitmq
+
   judge:
     container_name: judge
     restart: always
-    build: Judge
-    links:
-      - redis
-      - mongo
-      - rabbitmq
+    image: shivankarp/microj_judge:latest
+
   mongo:
     container_name: mongo_service
     image: 'mongo:7'
     expose: 
       - 27017
+
   redis:
     container_name: redis_service
     image: 'redis:4.0.11'
     expose:
       - 6379
+
   rabbitmq:
     container_name: queue_service
     image: rabbitmq:management
@@ -36,10 +32,11 @@ services:
       - 5672
     ports:
       - '15672:15672'
+
   frontend:
     container_name: frontend
     restart: always
-    build: frontend
+    image: shivankarp/microj_frontend:latest
     ports:
       - '4000:3000'
     depends_on:

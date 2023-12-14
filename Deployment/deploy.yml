@@ -1,8 +1,24 @@
 ---
-- name: MicrOJ
-  hosts: localhost
-  tasks:  
-    - name: Build and start containers
-      command: "docker-compose up"
+- name: microJ
+  hosts: my_server
+  become: true
+
+  tasks:
+    - name: Copy Docker Compose file
+      ansible.builtin.copy:
+        src: ../docker-compose.yml
+        dest: /home/shivankar/docker-compose.yml
+        owner: shivankar
+        group: shivankar
+        mode: '0644'
+
+    - name: Ensure Docker Compose is installed
+      ansible.builtin.package:
+        name: docker-compose
+        state: present
+
+    - name: Run Docker Compose
+      ansible.builtin.command:
+        cmd: "docker-compose -f /home/shivankar/docker-compose.yml up -d"
       args:
-        chdir: ../
+        chdir: /home/shivankar

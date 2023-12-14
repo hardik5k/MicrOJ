@@ -1,1 +1,2 @@
-localhost ansible_user = hardikkhandelwal
+[my_server]
+103.156.19.244:33033 ansible_ssh_user=shivankar ansible_ssh_pass=Test@123

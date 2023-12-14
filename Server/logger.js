@@ -1,38 +1,24 @@
 const winston = require('winston');
-const fs = require('fs');
-const path = require('path');
 
-const logDirectory = 'logs'; // Specify the directory where log files will be stored
-
-// Create the logs directory if it doesn't exist
-if (!fs.existsSync(logDirectory)) {
-  fs.mkdirSync(logDirectory);
-}
-
-// Define the file transport options
-const fileOptions = {
-  level: 'info', // Set the log level
-  filename: path.join(logDirectory, 'app.log'), // Specify the log file name
-  handleExceptions: true,
-  maxsize: 10 * 1024 * 1024, // Set the maximum log file size (in bytes)
-  maxFiles: 5, // Set the maximum number of log files to keep
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-};
-
-// Create the logger with the file transport
+// Define the logger configuration
 const logger = winston.createLogger({
+  level: 'info', // Set the logging level
+  format: winston.format.simple(), // Use the simple format
   transports: [
-    new winston.transports.File(fileOptions),
-  ],
-  exitOnError: false,
+    new winston.transports.Console(), // Log to the console
+    new winston.transports.File({ filename: 'app.log' }) // Log to a file
+  ]
 });
 
-// Add a console transport for logging to the console during development
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console());
-}
+// Log some messages
+logger.log('info', 'This is an information message.');
+logger.log('warn', 'This is a warning message.');
+logger.log('error', 'This is an error message.');
+
+// You can also use the logger's convenience methods
+logger.info('This is another information message.');
+logger.warn('This is another warning message.');
+logger.error('This is another error message.');
+
 
 module.exports = logger;
