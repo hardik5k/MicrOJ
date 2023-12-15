@@ -27,6 +27,22 @@ function generateUniqueIdFromTitle(title) {
     return uniqueId;
 }
 
+const testCases = {
+    1: {
+      input: 'inp1',
+      expectedOutput: '1 1',
+    },
+    2: {
+      input: '2',
+      expectedOutput: '2',
+    },
+  };
+
+function getTestCase(id) {
+    return testCases[id] || null;
+  };
+
+
 router.post('/add', async (req,res) =>{
     let ques_id =  generateUniqueIdFromTitle(req.body.title)
     let questionData = {
@@ -65,4 +81,4 @@ router.get('/get/:prob_id', async (req, res) => {
         });
 })
 
-module.exports = {router, generateUniqueIdFromTitle};
+module.exports = {router, generateUniqueIdFromTitle, getTestCase};
