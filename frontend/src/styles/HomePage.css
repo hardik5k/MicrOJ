@@ -1,55 +1,31 @@
-/* src/HomePage.css */
+/* src/styles/HomePage.css */
 
 .home-page {
-    text-align: center;
-  }
-  
-  .header {
-    background-color: #282c34;
-    padding: 20px;
-    color: white;
-  }
-  
-  .content {
-    margin-top: 20px;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-/* src/HomePage.css */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Optional: Set the height to fill the viewport */
+}
 
-.action-button-link {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #007bff; /* Button color */
-    color: white; /* Text color */
-    border: 1px solid #007bff; /* Button border */
-    border-radius: 5px; /* Optional: rounded corners */
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
-  
-    /* Hover effect */
-    &:hover {
-      background-color: #0056b3; /* Darker button color on hover */
-    }
-  }
-  
-  .action-button {
-    /* Style your regular button here */
-    /* Example styles */
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #28a745; /* Green button color */
-    color: white; /* Text color */
-    border: 1px solid #218838; /* Green button border */
-    border-radius: 5px; /* Optional: rounded corners */
-  }
-  
-  
+.content {
+  margin-top: 20px; /* Add space between Header and buttons */
+}
+
+.button-container {
+  display: flex;
+  gap: 20px; /* Adjust the gap between buttons as needed */
+}
+
+.action-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}

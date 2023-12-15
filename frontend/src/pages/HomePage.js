@@ -34,7 +34,7 @@ const HomePage = () => {
   //   setQuestions(apiResponse);
   //   setLoading(false);
   // };
-  
+  console.log("hlow");
   return (
     <div className="home-page">
       <Header></Header>

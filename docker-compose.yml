@@ -5,6 +5,7 @@ services:
     container_name: server
     restart: always
     image: shivankarp/microj_server:latest
+    # build: frontend
     ports:
       - '3000:3000'
 
@@ -12,6 +13,7 @@ services:
     container_name: judge
     restart: always
     image: shivankarp/microj_judge:latest
+    # build: judge
 
   mongo:
     container_name: mongo_service
@@ -37,6 +39,7 @@ services:
     container_name: frontend
     restart: always
     image: shivankarp/microj_frontend:latest
+    # build: frontend
     ports:
       - '4000:3000'
     depends_on:

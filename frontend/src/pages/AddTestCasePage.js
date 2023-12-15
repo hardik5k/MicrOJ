@@ -38,7 +38,7 @@ const AddTestCasePage = () => {
 
     try {
       // Make a POST request
-      const localhost = "http://127.0.0.1:3000";
+      //const localhost = "http://127.0.0.1:3000";
       const response = await axios.post("http://localhost:3000/testcase/" + String(questionId), requestBody);
 
       console.log('Server response:', response.data);
