@@ -2,7 +2,8 @@
 - name: microJ
   hosts: my_server
   become: true
-
+  vars:
+    ansible_become_password: "Test@123"
   tasks:
     - name: Copy Docker Compose file
       ansible.builtin.copy:
